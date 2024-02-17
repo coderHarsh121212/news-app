@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-
+import axios from "axios"
 const TopHeadlings = () => {
   const [news, setNews] = useState([]);
   const [newsdisplay, setNesdisplay] = useState(0);
   const fetchNews = async () => {
     try {
-      const response = await fetch(
+      const response = await axios.get(
         "https://newsapi.org/v2/top-headlines?country=in&apiKey=ffdf04272b6a4ffebf3abb2c6c262889"
       );
-      const data = await response.json();
-
-      setNews(data.articles);
+      
+      setNews(response.data.articles);
     } catch (error) {
       console.error("Error fetching news:", error);
     }
