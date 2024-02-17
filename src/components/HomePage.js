@@ -1,0 +1,48 @@
+import React, { useState, useEffect } from "react";
+
+const News = () => {
+  const [news, setNews] = useState([]);
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
+  const fetchNews = async () => {
+    try {
+      const response = await fetch(
+        "https://newsapi.org/v2/top-headlines/sources?apiKey=ffdf04272b6a4ffebf3abb2c6c262889"
+      );
+      const data = await response.json();
+    //   console.log(data);
+      setNews(data.sources);
+    } catch (error) {
+      console.error("Error fetching news:", error);
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-4" id="home">
+      <h1 className="text-2xl font-bold mb-4">Trending News</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {news.slice(0,5).map((article, index) => (
+          <div key={index} className="bg-white shadow-md p-4">
+            <img src={article.urlToImage} alt={article.title}></img>
+            <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
+            <p className="text-gray-600">{article.description}</p>
+            <a
+              href={article.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 text-blue-500 hover:text-blue-600"
+            >
+              Read more
+            </a>
+          </div>
+        ))}
+      </div>
+      
+    </div>
+  );
+};
+
+export default News;
